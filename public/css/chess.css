@@ -1,0 +1,13 @@
+body{  font-size: 12px; line-height: 150%; }
+.box { margin:0 auto; width:460px; position: relative; text-align: center; }
+.chess_left {margin-top: 20px;}
+.chess_right {  float:left; display:none}
+.move_info {  float:left; margin-top:20px; display: none !important;}
+
+.bill_box{ height: 320px; width: 80px; overflow:auto;}
+.bill_box li { cursor:pointer; text-align:left}
+.bill_box li:hover { cursor:pointer; background: #C6A577; }
+.bill_box li:active { cursor:pointer; background: #fff; }
+#billList{ margin-top:20px}
+.bn_box{margin-bottom: 5px;}
+.bn_box_1{display: flex; justify-content: space-between;}

@@ -1,18 +1,18 @@
 
 
-var com = com||{};
+const com = {};
 
 com.init = function (stype){
 	
 	com.nowStype= stype || com.getCookie("stype") ||"stype2";
-	var stype = com.stype[com.nowStype];
-	com.width			=	stype.width;		//Chiều rộng
-	com.height			=	stype.height; 		//Chiều cao
-	com.spaceX			=	stype.spaceX;		//Khoảng điểm X
-	com.spaceY			=	stype.spaceY;		//Khoảng điểm Y
-	com.pointStartX		=	stype.pointStartX;	//Điểm đầu tiên là tọa độ X;
-	com.pointStartY		=	stype.pointStartY;	//Điểm đầu tiên là tọa độ Y;
-	com.page			=	stype.page;			//Danh mục hình ảnh
+	let stypes = com.stype[com.nowStype];
+	com.width			=	stypes.width;		//Chiều rộng
+	com.height			=	stypes.height; 		//Chiều cao
+	com.spaceX			=	stypes.spaceX;		//Khoảng điểm X
+	com.spaceY			=	stypes.spaceY;		//Khoảng điểm Y
+	com.pointStartX		=	stypes.pointStartX;	//Điểm đầu tiên là tọa độ X;
+	com.pointStartY		=	stypes.pointStartY;	//Điểm đầu tiên là tọa độ Y;
+	com.page			=	stypes.page;			//Danh mục hình ảnh
 	
 	com.get("box").style.width = com.width+130+"px";
 	
@@ -133,7 +133,7 @@ com.loadImages = function(stype){
 	com.dotImg.src  = "img/"+stype+"/dot.png";
 	
 	//cờ tướng
-	for (var i in com.args){
+	for (let i in com.args){
 		com[i] = {};
 		com[i].img = new Image();
 		com[i].img.src = "img/"+stype+"/"+ com.args[i].img +".png";
@@ -151,7 +151,7 @@ com.loadImages = function(stype){
 // Danh sách hiển thị
 com.show = function (){
 	com.ct.clearRect(0, 0, com.width, com.height);  
-	for (var i=0; i<com.childList.length ; i++){
+	for (let i=0; i<com.childList.length ; i++){
 		com.childList[i].show();
 	}
 }
@@ -169,9 +169,9 @@ com.showPane  = function (x,y,newX,newY){
 
 // Tạo các quân cờ bên trong bản đồ
 com.createMans = function(map){
-	for (var i=0; i<map.length; i++){
-		for (var n=0; n<map[i].length; n++){
-			var key = map[i][n];
+	for (let i=0; i<map.length; i++){
+		for (let n=0; n<map[i].length; n++){
+			let key = map[i][n];
 			if (key){
 				com.mans[key]=new com.class.Man(key);
 				com.mans[key].x=n;
@@ -188,21 +188,21 @@ com.alert = function (obj,f,n){
 	if (typeof obj !== "object") {
 		try{console.log(obj)} catch (e){}
 	}
-	var arr = [];
-	for (var i in obj) arr.push(i+" = "+obj[i]);
+	let arr = [];
+	for (let i in obj) arr.push(i+" = "+obj[i]);
 	try{console.log(arr.join(n||"\n"))} catch (e){}
 }
 
 
 //com.alert tốc ký, xem xét tên biến z là ít được sử dụng nhất
-var z = com.alert;
+let z = com.alert;
 
 
 // Lấy khoảng cách từ phía bên trái của trang
 com.getDomXY = function (dom){
-	var left = dom.offsetLeft;
-	var top = dom.offsetTop;
-	var current = dom.offsetParent;
+	let left = dom.offsetLeft;
+	let top = dom.offsetTop;
+	let current = dom.offsetParent;
 	while (current !== null){
 		left += current.offsetLeft;
 		top += current.offsetTop;
@@ -228,8 +228,8 @@ com.getCookie = function(name){
 
 // bản sao mảng hai chiều
 com.arr2Clone = function (arr){
-	var newArr=[];
-	for (var i=0; i<arr.length ; i++){	
+	let newArr=[];
+	for (let i=0; i<arr.length ; i++){	
 		newArr[i] = arr[i].slice();
 	}
 	return newArr;
@@ -238,7 +238,7 @@ com.arr2Clone = function (arr){
 
 // dữ liệu tải ajax
 com.getData = function (url,fun){
-	var XMLHttpRequestObject=false;
+	let XMLHttpRequestObject=false;
 	if(window.XMLHttpRequest){
 		XMLHttpRequestObject=new XMLHttpRequest();
 	}else if(window.ActiveXObject){
@@ -260,13 +260,13 @@ com.getData = function (url,fun){
 
 // Tạo tọa độ
 com.createMove = function (map,x,y,newX,newY){
-	var h="";
-	var man = com.mans[map[y][x]];
+	let h="";
+	let man = com.mans[map[y][x]];
 	h+= man.text;
 	map[newY][newX] = map[y][x];
 	delete map[y][x];
 	if (man.my===1){
-		var mumTo=["一","二","三","四","五","六","七","八","九","十"];	
+		let mumTo=["一","二","三","四","五","六","七","八","九","十"];	
 		newX=8-newX;
 		h+= mumTo[8-x];
 		if (newY > y) {
@@ -288,7 +288,7 @@ com.createMove = function (map,x,y,newX,newY){
 			h+= mumTo[newX];
 		}
 	}else{
-		var mumTo=["１","２","３","４","５","６","７","８","９","10"];
+		let mumTo=["１","２","３","４","５","６","７","８","９","10"];
 		h+= mumTo[x];
 		if (newY > y) {
 			h+= "进";
@@ -361,10 +361,10 @@ com.bylaw ={}
 
 // xe
 com.bylaw.c = function (x,y,map,my){
-	var d=[];
+	let d=[];
 	
 	// trái tìm kiếm
-	for (var i=x-1; i>= 0; i--){
+	for (let i=x-1; i>= 0; i--){
 		if (map[y][i]) {
 			if (com.mans[map[y][i]].my!=my) d.push([i,y]);
 			break
@@ -374,7 +374,7 @@ com.bylaw.c = function (x,y,map,my){
 	}
 	
 	// Tìm kiếm bên phải
-	for (var i=x+1; i <= 8; i++){
+	for (let i=x+1; i <= 8; i++){
 		if (map[y][i]) {
 			if (com.mans[map[y][i]].my!=my) d.push([i,y]);
 			break
@@ -383,7 +383,7 @@ com.bylaw.c = function (x,y,map,my){
 		}
 	}
 	// Tìm kiếm
-	for (var i = y-1 ; i >= 0; i--){
+	for (let i = y-1 ; i >= 0; i--){
 		if (map[i][x]) {
 			if (com.mans[map[i][x]].my!=my) d.push([x,i]);
 			break
@@ -393,7 +393,7 @@ com.bylaw.c = function (x,y,map,my){
 	}
 	
 	// Tìm kiếm dưới
-	for (var i = y+1 ; i<= 9; i++){
+	for (let i = y+1 ; i<= 9; i++){
 		if (map[i][x]) {
 			if (com.mans[map[i][x]].my!=my) d.push([x,i]);
 			break
@@ -406,7 +406,7 @@ com.bylaw.c = function (x,y,map,my){
 
 //Ngựa
 com.bylaw.m = function (x,y,map,my){
-	var d=[];
+	let d=[];
 
 	//1Điểm
 	if ( y-2>= 0 && x+1<= 8 && (!com.mans[map[y-1][x]] || !com.mans[map[y-1][x+1]]) && (!com.mans[map[y-2][x+1]] || com.mans[map[y-2][x+1]].my!=my)) d.push([x+1,y-2]);
@@ -430,11 +430,11 @@ com.bylaw.m = function (x,y,map,my){
 
 //Tượng
 com.bylaw.x = function (x,y,map,my){
-	var d=[];
-	var xValid = [3,4,5];
-	var yValid = [0,1,2,7,8,9];
+	let d=[];
+	let xValid = [3,4,5];
+	let yValid = [0,1,2,7,8,9];
 
-	for (var i=1; i<= 8; i++){
+	for (let i=1; i<= 8; i++){
 		if (y+i>9 || x+i>8) {
 			break;
 		}
@@ -450,7 +450,7 @@ com.bylaw.x = function (x,y,map,my){
 		}
 		d.push([x+i,y+i])
 	}
-	for (var i=1; i<= 8; i++){
+	for (let i=1; i<= 8; i++){
 		if (y+i>9 || x-i<0) {
 			break;
 		}
@@ -466,7 +466,7 @@ com.bylaw.x = function (x,y,map,my){
 		}
 		d.push([x-i,y+i])
 	}
-	for (var i=1; i<= 8; i++){
+	for (let i=1; i<= 8; i++){
 		if (y-i<0 || x+i>8) {
 			break;
 		}
@@ -482,7 +482,7 @@ com.bylaw.x = function (x,y,map,my){
 		}
 		d.push([x+i,y-i])
 	}
-	for (var i=1; i<= 8; i++){
+	for (let i=1; i<= 8; i++){
 		if (y-i<0 || x-i<0) {
 			break;
 		}
@@ -509,9 +509,9 @@ com.bylaw.x = function (x,y,map,my){
 
 //sỹ
 com.bylaw.s = function (x,y,map,my){
-	var d=[];
-	var xValid = [3,4,5];
-	var yValid = [0,1,2,7,8,9];
+	let d=[];
+	let xValid = [3,4,5];
+	let yValid = [0,1,2,7,8,9];
 
 	if ( xValid.includes(x+1) && yValid.includes(y+1) && (!com.mans[map[y+1][x+1]] || com.mans[map[y+1][x+1]].my!=my)) d.push([x+1,y+1]);
 	if ( xValid.includes(x-1) && yValid.includes(y+1) && (!com.mans[map[y+1][x-1]] || com.mans[map[y+1][x-1]].my!=my)) d.push([x-1,y+1]);
@@ -528,9 +528,9 @@ com.bylaw.s = function (x,y,map,my){
 
 //Tướng
 com.bylaw.j = function (x,y,map,my){
-	var d=[];
-	var xValid = [3,4,5];
-	var yValid = [0,1,2,7,8,9];
+	let d=[];
+	let xValid = [3,4,5];
+	let yValid = [0,1,2,7,8,9];
 	
 	// Trái
 	for (let i=x-1; i>= 0; i--){
@@ -674,11 +674,12 @@ com.bylaw.j = function (x,y,map,my){
 
 // pháo
 com.bylaw.p = function (x,y,map,my){
-	var d=[];
+	let d=[];
+	let n=0;
 	
 	// trái tìm kiếm
-	var n=0;
-	for (var i=x-1; i>= 0; i--){
+	n=0;
+	for (let i=x-1; i>= 0; i--){
 		if (map[y][i]) {
 			if (n==0){
 				n++;
@@ -692,8 +693,8 @@ com.bylaw.p = function (x,y,map,my){
 		}
 	}
 	// Tìm kiếm bên phải
-	var n=0;
-	for (var i=x+1; i <= 8; i++){
+	n=0;
+	for (let i=x+1; i <= 8; i++){
 		if (map[y][i]) {
 			if (n==0){
 				n++;
@@ -708,8 +709,8 @@ com.bylaw.p = function (x,y,map,my){
 	}
 	
 	// Tìm kiếm
-	var n=0;
-	for (var i = y-1 ; i >= 0; i--){
+	n=0;
+	for (let i = y-1 ; i >= 0; i--){
 		if (map[i][x]) {
 			if (n==0){
 				n++;
@@ -723,8 +724,8 @@ com.bylaw.p = function (x,y,map,my){
 		}
 	}
 	// Tìm kiếm dưới
-	var n=0;
-	for (var i = y+1 ; i<= 9; i++){
+	n=0;
+	for (let i = y+1 ; i<= 9; i++){
 		if (map[i][x]) {
 			if (n==0){
 				n++;
@@ -739,8 +740,8 @@ com.bylaw.p = function (x,y,map,my){
 	}
 	
 	// // phai duoi
-	// var n=0;
-	// for (var i=1; i<= 8; i++){
+	// n=0;
+	// for (let i=1; i<= 8; i++){
 	// 	if (y+i>9 || x+i>8) break;
 	// 	if (map[y+i][x+i]) {
 	// 		if (n==0){
@@ -755,8 +756,8 @@ com.bylaw.p = function (x,y,map,my){
 	// 	}
 	// }
 	// // trai duoi
-	// var n=0;
-	// for (var i=1; i<= 8; i++){
+	// n=0;
+	// for (let i=1; i<= 8; i++){
 	// 	if (y+i>9 || x-i<0) break;
 	// 	if (map[y+i][x-i]) {
 	// 		if (n==0){
@@ -772,8 +773,8 @@ com.bylaw.p = function (x,y,map,my){
 	// }
 	
 	// // Trai tren
-	// var n=0;
-	// for (var i=1; i<= 8; i++){
+	// n=0;
+	// for (let i=1; i<= 8; i++){
 	// 	if (y-i<0 || x-i<0) break;
 	// 	if (map[y-i][x-i]) {
 	// 		if (n==0){
@@ -788,8 +789,8 @@ com.bylaw.p = function (x,y,map,my){
 	// 	}
 	// }
 	// // phai tren
-	// var n=0;
-	// for (var i=1; i<= 8; i++){
+	// n=0;
+	// for (let i=1; i<= 8; i++){
 	// 	if (y-i<0 || x+i>8) break;
 	// 	if (map[y-i][x+i]) {
 	// 		if (n==0){
@@ -809,7 +810,7 @@ com.bylaw.p = function (x,y,map,my){
 
 //Tốt
 com.bylaw.z = function (x,y,map,my){
-	var d=[];
+	let d=[];
 	if (my===1){ //quân đỏ
 		//trên
 		if ( y-1>= 0 && (!com.mans[map[y-1][x]] || com.mans[map[y-1][x]].my!=my)) d.push([x,y-1]);
@@ -995,7 +996,7 @@ com.args={
 com.class = com.class || {} //lớp
 com.class.Man = function (key, x, y){
 	this.pater = key.slice(0,1);
-	var o=com.args[this.pater]
+	let o=com.args[this.pater]
 	this.x = x||0;   
     this.y = y||0;
 	this.key = key ;
@@ -1017,8 +1018,8 @@ com.class.Man = function (key, x, y){
 	
 	this.bl = function (map){
 		const o=com.args[this.pater];
-		var map = map || play.map
-		return com.bylaw[o.bl](this.x,this.y,map,this.my)
+		let maps = map || play.map
+		return com.bylaw[o.bl](this.x,this.y,maps,this.my)
 	}
 }
 
@@ -1053,7 +1054,7 @@ com.class.Dot = function (img, x, y){
 	this.dots=[]
 	
 	this.show = function (){
-		for (var i=0; i<this.dots.length;i++){
+		for (let i=0; i<this.dots.length;i++){
 			if (this.isShow) com.ct.drawImage(com.dotImg, com.spaceX * this.dots[i][0]+10  + com.pointStartX ,com.spaceY *  this.dots[i][1]+10 + com.pointStartY)
 		}
 	}

@@ -1,6 +1,6 @@
 
 
-var play = play||{};
+const play = {};
 
 play.init = function (){
 	
@@ -24,9 +24,9 @@ play.init = function (){
 	
 	
 	// Khởi tạo quân cờ
-	for (var i=0; i<play.map.length; i++){
-		for (var n=0; n<play.map[i].length; n++){
-			var key = play.map[i][n];
+	for (let i=0; i<play.map.length; i++){
+		for (let n=0; n<play.map[i].length; n++){
+			let key = play.map[i][n];
 			if (key){
 				com.mans[key].x=n;
 				com.mans[key].y=i;
@@ -50,12 +50,12 @@ play.init = function (){
 
 // lùi
 play.regret = function (){
-	var map  = com.arr2Clone(com.initMap);
+	let map  = com.arr2Clone(com.initMap);
 	
 	// Khởi tạo tất cả các phần
-	for (var i=0; i<map.length; i++){
-		for (var n=0; n<map[i].length; n++){
-			var key = map[i][n];
+	for (let i=0; i<map.length; i++){
+		for (let n=0; n<map[i].length; n++){
+			let key = map[i][n];
 			if (key){
 				com.mans[key].x=n;
 				com.mans[key].y=i;
@@ -63,20 +63,20 @@ play.regret = function (){
 			}
 		}
 	}
-	var pace= play.pace;
+	let pace= play.pace;
 	pace.pop();
 	pace.pop();
 	
-	for (var i=0; i<pace.length; i++){
-		var p= pace[i].split("")
-		var x = parseInt(p[0], 10);
-		var y = parseInt(p[1], 10);
-		var newX = parseInt(p[2], 10);
-		var newY = parseInt(p[3], 10);
-		var key=map[y][x];
+	for (let i=0; i<pace.length; i++){
+		let p= pace[i].split("")
+		let x = parseInt(p[0], 10);
+		let y = parseInt(p[1], 10);
+		let newX = parseInt(p[2], 10);
+		let newY = parseInt(p[3], 10);
+		let key=map[y][x];
 		//try{
 	 
-		var cMan=map[newY][newX];
+		let cMan=map[newY][newX];
 		if (cMan) com.mans[map[newY][newX]].isShow = false;
 		com.mans[key].x = newX;
 		com.mans[key].y = newY;
@@ -104,10 +104,10 @@ play.clickCanvas = function (e){
 	if (!play.isPlay) return false;
 
 
-	var key = play.getClickMan(e);
-	var point = play.getClickPoint(e);
-	var x = point.x;
-	var y = point.y;
+	let key = play.getClickMan(e);
+	let point = play.getClickPoint(e);
+	let x = point.x;
+	let y = point.y;
 	if (key){
 		play.clickMan(key,x,y);	
 	}else {
@@ -121,13 +121,13 @@ play.clickCanvas = function (e){
 
 // Nhấp vào mảnh, trong hai trường hợp, chọn hoặc ăn
 play.clickMan = function (key,x,y){
-	var man = com.mans[key];
+	let man = com.mans[key];
 	//an quan
 	if (play.nowManKey&&play.nowManKey != key && man.my != com.mans[play.nowManKey ].my){
 		//manCho các miếng được ăn
 		if (play.indexOfPs(com.mans[play.nowManKey].ps,[x,y])){
 			man.isShow = false;
-			var pace=com.mans[play.nowManKey].x+""+com.mans[play.nowManKey].y
+			let pace=com.mans[play.nowManKey].x+""+com.mans[play.nowManKey].y
 			//z(bill.createMove(play.map,man.x,man.y,x,y))
 			delete play.map[com.mans[play.nowManKey].y][com.mans[play.nowManKey].x];
 			play.map[y][x] = play.nowManKey;
@@ -162,11 +162,11 @@ play.clickMan = function (key,x,y){
 
 // Nhấp vào điểm
 play.clickPoint = function (x,y){
-	var key=play.nowManKey;
-	var man=com.mans[key];
+	let key=play.nowManKey;
+	let man=com.mans[key];
 	if (play.nowManKey){
 		if (play.indexOfPs(com.mans[key].ps,[x,y])){
-			var pace=man.x+""+man.y
+			let pace=man.x+""+man.y
 			//z(bill.createMove(play.map,man.x,man.y,x,y))
 			delete play.map[man.y][man.x];
 			play.map[y][x] = key;
@@ -206,6 +206,7 @@ const fetchAPI = async (paceParam) => {
 // Ai tự động di chuyển quân cờ
 play.AIPlay = async function (){
 	//return
+	let key;
 	play.my = -1 ;
 	const pace = await fetchAPI(play.pace.join(""));
 	if (!pace) {
@@ -213,10 +214,10 @@ play.AIPlay = async function (){
 		return ;
 	}
 	play.pace.push(pace.join(""));
-	var key=play.map[pace[1]][pace[0]]
+	key=play.map[pace[1]][pace[0]]
 		play.nowManKey = key;
 	
-	var key=play.map[pace[3]][pace[2]];
+	key=play.map[pace[3]][pace[2]];
 	if (key){
 		play.AIclickMan(key,pace[2],pace[3]);	
 	}else {
@@ -226,6 +227,7 @@ play.AIPlay = async function (){
 }
 
 play.AIPlay01 = async function (){
+	let key;
 	const oldDepth = play.depth;
 	play.depth = 4;
 	//return
@@ -236,10 +238,10 @@ play.AIPlay01 = async function (){
 		return ;
 	}
 	play.pace.push(pace.join(""));
-	var key=play.map[pace[1]][pace[0]]
+	key=play.map[pace[1]][pace[0]]
 		play.nowManKey = key;
 	
-	var key=play.map[pace[3]][pace[2]];
+	key=play.map[pace[3]][pace[2]];
 	if (key){
 		play.AIclickMan(key,pace[2],pace[3]);	
 	}else {
@@ -252,8 +254,8 @@ play.AIPlay01 = async function (){
 
 // Kiểm tra nếu lâu sẽ
 play.checkFoul = function(){
-	var p=play.pace;
-	var len=parseInt(p.length,10);
+	let p=play.pace;
+	let len=parseInt(p.length,10);
 	if (len>11&&p[len-1] == p[len-5] &&p[len-5] == p[len-9]){
 		return p[len-4].split("");
 	}
@@ -263,7 +265,7 @@ play.checkFoul = function(){
 
 
 play.AIclickMan = function (key,x,y){
-	var man = com.mans[key];
+	let man = com.mans[key];
 	
 	// ăn quân
 	man.isShow = false;
@@ -281,8 +283,8 @@ play.AIclickMan = function (key,x,y){
 }
 
 play.AIclickPoint = function (x,y){
-	var key=play.nowManKey;
-	var man=com.mans[key];
+	let key=play.nowManKey;
+	let man=com.mans[key];
 	if (play.nowManKey){
 		delete play.map[com.mans[play.nowManKey].y][com.mans[play.nowManKey].x];
 		play.map[y][x] = key;
@@ -300,7 +302,7 @@ play.AIclickPoint = function (x,y){
 
 
 play.indexOfPs = function (ps,xy){
-	for (var i=0; i<ps.length; i++){
+	for (let i=0; i<ps.length; i++){
 		if (ps[i][0]==xy[0]&&ps[i][1]==xy[1]) return true;
 	}
 	return false;
@@ -310,18 +312,18 @@ play.indexOfPs = function (ps,xy){
 
 // Nhận điểm nhấp
 play.getClickPoint = function (e){
-	var domXY = com.getDomXY(com.canvas);
-	var x=Math.round((e.pageX-domXY.x-com.pointStartX-20)/com.spaceX)
-	var y=Math.round((e.pageY-domXY.y-com.pointStartY-20)/com.spaceY)
+	let domXY = com.getDomXY(com.canvas);
+	let x=Math.round((e.pageX-domXY.x-com.pointStartX-20)/com.spaceX)
+	let y=Math.round((e.pageY-domXY.y-com.pointStartY-20)/com.spaceY)
 	return {"x":x,"y":y}
 }
 
 
 // Lấy mảnh
 play.getClickMan = function (e){
-	var clickXY=play.getClickPoint(e);
-	var x=clickXY.x;
-	var y=clickXY.y;
+	let clickXY=play.getClickPoint(e);
+	let x=clickXY.x;
+	let y=clickXY.y;
 	if (x < 0 || x>8 || y < 0 || y > 9) return false;
 	return (play.map[y][x] && play.map[y][x]!="0") ? play.map[y][x] : false;
 }

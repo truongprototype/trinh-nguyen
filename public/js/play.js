@@ -2,6 +2,14 @@
 
 const play = {};
 
+// Nhận ID
+play.getId = function (id){
+	return document.getElementById(id)
+}
+play.get = function (query){
+	return document.querySelector(query)
+}
+
 play.init = function (){
 	
 	play.my				=	1;				// Phía người chơi
@@ -15,10 +23,8 @@ play.init = function (){
 	play.showPane 		= 	com.showPane;
 	play.isOffensive	=	true;			// Cho dù đó là lần đầu tiên
 	play.depth			=	play.depth || 3;				// Độ sâu tìm kiếm
-	
 	play.isFoul			=	false;	// Bạn có phạm lỗi với người cai trị?
-	
-	
+	play.thinking       =   false;
 	
 	com.pane.isShow		=	 false;			// Ẩn hộp
 	
@@ -39,13 +45,57 @@ play.init = function (){
 	//Sự kiện nhấp chuột
 	com.canvas.addEventListener("click",play.clickCanvas)
 	
-	com.get("regretBn").addEventListener("click", function(e) {
+	play.getId("regretBn").addEventListener("click", function(e) {
 		play.regret();
 	})
 	
 }
 
+window.onload = function(){  
+	com.bg=new com.class.Bg();
+	com.dot = new com.class.Dot();
+	com.pane=new com.class.Pane();
+	com.pane.isShow=false;
+	
+	com.childList=[com.bg,com.dot,com.pane];	
+	com.mans	 ={};		// Bộ sưu tập cờ tướng
+	com.createMans(com.initMap)		// Tạo quân cờ
+	com.bg.show();
+	play.getId("billBn").addEventListener("click", function(e) {
+		if (confirm("Bạn có chắc chắn muốn chơi lại? (Are you sure?)")){
+			window.location.reload();
+		}
+	})
 
+	play.getId("onePlay").addEventListener("click", function(e) {
+		play.isPlay=true ;	
+		play.getId("bnBox").style.display = "none";
+		play.getId("bnBox1").style.display = "block";
+		play.type = play.getId("type").value;
+		play.depth = play.type === 'bot' ? play.getId("level").value : null;
+		play.type1 = play.getId("type1").value;
+		play.depth1 = play.type1 === 'bot' ? play.getId("level1").value : null;
+		play.first = play.getId("first").value;
+		play.init();
+		if (play.first === 'below') {
+			if (play.type1 === 'bot') play.AIPlay01();
+		} else {
+			play.AIPlay()
+		}
+	});
+
+	play.getId("type").addEventListener("change", function(e) {
+		const type1 = this.value;
+		if (type1 === 'bot') play.getId("level").style.display = "inline-block";
+		else play.getId("level").style.display = "none";
+	});
+
+	play.getId("type1").addEventListener("change", function(e) {
+		const type1 = this.value;
+		if (type1 === 'bot') play.getId("level1").style.display = "inline-block";
+		else play.getId("level1").style.display = "none";
+	});
+}
 
 
 // lùi
@@ -101,8 +151,7 @@ play.regret = function (){
 
 // Bấm vào bảng sự kiện
 play.clickCanvas = function (e){
-	if (!play.isPlay) return false;
-
+	if (!play.isPlay || play.thinking) return false;
 
 	let key = play.getClickMan(e);
 	let point = play.getClickPoint(e);
@@ -114,8 +163,6 @@ play.clickCanvas = function (e){
 		play.clickPoint(x,y);	
 	}
 	play.isFoul = play.checkFoul();// Kiểm tra xem nó có dài không
-
-	// play.AIPlay01();
 }
 
 
@@ -189,7 +236,8 @@ play.clickPoint = function (x,y){
 const fetchAPI = async (paceParam) => {
 	// const {bylaw, depth, isFoul, isOffensive, isPlay, mans, map, my, nowManKey, pace} = play;
 	// const restPlay = {bylaw, depth, isFoul, isOffensive, isPlay, mans, map, my, nowManKey, pace};
-
+	play.thinking = true;
+	play.get('.lds-ellipsis').style.display = 'block';
 	const response = await fetch('http://localhost:3000/api/move', {
 		method: 'POST',
 		headers: {
@@ -200,6 +248,8 @@ const fetchAPI = async (paceParam) => {
 		}),
 	});
 	const data = await response.json();
+	play.thinking = false;
+	play.get('.lds-ellipsis').style.display = 'none';
 	return data;
 }
 
@@ -223,13 +273,14 @@ play.AIPlay = async function (){
 	}else {
 		play.AIclickPoint(pace[2],pace[3]);	
 	}
-	// setTimeout("play.AIPlay01()",1000);
+	
+	if (play.type1 === 'bot') setTimeout("play.AIPlay01()",1000);
 }
 
 play.AIPlay01 = async function (){
 	let key;
 	const oldDepth = play.depth;
-	play.depth = 4;
+	play.depth = play.depth1;
 	//return
 	play.my = 1 ;
 	const pace = await fetchAPI(play.pace.join(""));
@@ -248,7 +299,8 @@ play.AIPlay01 = async function (){
 		play.AIclickPoint(pace[2],pace[3]);	
 	}
 	play.depth = oldDepth;
-	setTimeout("play.AIPlay()",1000);
+	
+	if (play.type === 'bot') setTimeout("play.AIPlay()",1000);
 }
 
 

@@ -14,7 +14,7 @@ com.init = function (stype){
 	com.pointStartY		=	stypes.pointStartY;	//Điểm đầu tiên là tọa độ Y;
 	com.page			=	stypes.page;			//Danh mục hình ảnh
 	
-	com.get("box").style.width = com.width+130+"px";
+	document.getElementById("box").style.width = com.width+130+"px";
 	
 	com.canvas			=	document.getElementById("chess"); //Canvas
 	com.ct				=	com.canvas.getContext("2d") ; 
@@ -46,77 +46,6 @@ com.stype = {
 		pointStartY:0,		//Điểm đầu tiên là tọa độ Y;
 		page:"stype_2"	//Danh mục hình ảnh
 	}		
-}
-
-// Nhận ID
-com.get = function (id){
-	return document.getElementById(id)
-}
-
-window.onload = function(){  
-	com.bg=new com.class.Bg();
-	com.dot = new com.class.Dot();
-	com.pane=new com.class.Pane();
-	com.pane.isShow=false;
-	
-	com.childList=[com.bg,com.dot,com.pane];	
-	com.mans	 ={};		// Bộ sưu tập cờ tướng
-	com.createMans(com.initMap)		// Tạo quân cờ
-	com.bg.show();
-	com.get("billBn").addEventListener("click", function(e) {
-		if (confirm("Bạn có chắc chắn muốn chơi lại? (Are you sure?)")){
-			window.location.reload();
-		}
-	})
-
-	com.get("onePlay").addEventListener("click", function(e) {
-		play.isPlay=true ;	
-		com.get("bnBox").style.display = "none";
-		com.get("bnBox1").style.display = "flex";
-		com.get("moveInfo").innerHTML="";
-		play.depth = 1;
-		play.init();
-	})
-	com.get("twoPlay").addEventListener("click", function(e) {
-		play.isPlay=true ;	
-		com.get("bnBox").style.display = "none";
-		com.get("bnBox1").style.display = "flex";
-		com.get("moveInfo").innerHTML="";
-		play.depth = 2;
-		play.init();
-	})
-	com.get("tyroPlay").addEventListener("click", function(e) {
-		play.isPlay=true ;	
-		com.get("bnBox").style.display = "none";
-		com.get("bnBox1").style.display = "flex";
-		com.get("moveInfo").innerHTML="";
-		play.depth = 3;
-		play.init();
-	})
-	com.get("superPlay").addEventListener("click", function(e) {
-		play.isPlay=true ;	
-		com.get("bnBox").style.display = "none";
-		com.get("bnBox1").style.display = "flex";
-		com.get("moveInfo").innerHTML="";
-		play.depth = 4;
-		play.init();
-	})
-	com.get("masterPlay").addEventListener("click", function(e) {
-		play.isPlay=true ;	
-		com.get("bnBox").style.display = "none";
-		com.get("bnBox1").style.display = "flex";
-		com.get("moveInfo").innerHTML="";
-		play.depth = 5;
-		play.init();
-	})
-	com.get("ultraPlay").addEventListener("click", function(e) {
-		play.isPlay=true ;	
-		com.get("bnBox").style.display = "none";
-		com.get("bnBox1").style.display = "flex";
-		com.get("moveInfo").innerHTML="";
-		play.depth = 6;
-		play.init();
-	})
 }
 
 

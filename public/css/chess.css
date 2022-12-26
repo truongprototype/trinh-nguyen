@@ -1,7 +1,7 @@
 body{  font-size: 12px; line-height: 150%; }
-.box { margin:0 auto; width:460px; position: relative; text-align: center; }
-.chess_left {margin-top: 20px;}
-.chess_right {  float:left; display:none}
+.box { margin:20px auto; position: relative; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; }
+.chess_left {margin-bottom: 20px; position: relative;}
+.chess_right {margin-top: 0;}
 .move_info {  float:left; margin-top:20px; display: none !important;}
 
 .bill_box{ height: 320px; width: 80px; overflow:auto;}
@@ -10,4 +10,66 @@ body{  font-size: 12px; line-height: 150%; }
 .bill_box li:active { cursor:pointer; background: #fff; }
 #billList{ margin-top:20px}
 .bn_box{margin-bottom: 5px;}
-.bn_box_1{display: flex; justify-content: space-between;}
+.chess_left .bn_box{text-align: center; margin-top: 20px;}
+.btn {min-width: 180px;}
+select {height: 24px;}
+
+.lds-ellipsis {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    left: 48%;
+    top: 38.5%;
+    transform: translateX(-50%);
+  }
+  .lds-ellipsis div {
+    position: absolute;
+    top: 33px;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: #fff;
+    animation-timing-function: cubic-bezier(0, 1, 1, 0);
+  }
+  .lds-ellipsis div:nth-child(1) {
+    left: 8px;
+    animation: lds-ellipsis1 0.6s infinite;
+  }
+  .lds-ellipsis div:nth-child(2) {
+    left: 8px;
+    animation: lds-ellipsis2 0.6s infinite;
+  }
+  .lds-ellipsis div:nth-child(3) {
+    left: 32px;
+    animation: lds-ellipsis2 0.6s infinite;
+  }
+  .lds-ellipsis div:nth-child(4) {
+    left: 56px;
+    animation: lds-ellipsis3 0.6s infinite;
+  }
+  @keyframes lds-ellipsis1 {
+    0% {
+      transform: scale(0);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  @keyframes lds-ellipsis3 {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(0);
+    }
+  }
+  @keyframes lds-ellipsis2 {
+    0% {
+      transform: translate(0, 0);
+    }
+    100% {
+      transform: translate(24px, 0);
+    }
+  }
+  
